@@ -66,41 +66,41 @@ window.onload = function() {
 	}
 	request.send();
 
-	detectorElem = document.getElementById( "detector" );
-	canvasElem = document.getElementById( "output" );
-	DEBUGCANVAS = document.getElementById( "waveform" );
+	// detectorElem = document.getElementById( "detector" );
+	// canvasElem = document.getElementById( "output" );
+	// DEBUGCANVAS = document.getElementById( "waveform" );
 	if (DEBUGCANVAS) {
 		waveCanvas = DEBUGCANVAS.getContext("2d");
 		waveCanvas.strokeStyle = "black";
 		waveCanvas.lineWidth = 1;
 	}
-	pitchElem = document.getElementById( "pitch" );
-	noteElem = document.getElementById( "note" );
-	detuneElem = document.getElementById( "detune" );
-	detuneAmount = document.getElementById( "detune_amt" );
+	// pitchElem = document.getElementById( "pitch" );
+	// noteElem = document.getElementById( "note" );
+	// detuneElem = document.getElementById( "detune" );
+	// detuneAmount = document.getElementById( "detune_amt" );
 
-	detectorElem.ondragenter = function () { 
-		this.classList.add("droptarget"); 
-		return false; };
-	detectorElem.ondragleave = function () { this.classList.remove("droptarget"); return false; };
-	detectorElem.ondrop = function (e) {
-  		this.classList.remove("droptarget");
-  		e.preventDefault();
-		theBuffer = null;
+	// detectorElem.ondragenter = function () { 
+	// 	this.classList.add("droptarget"); 
+	// 	return false; };
+	// detectorElem.ondragleave = function () { this.classList.remove("droptarget"); return false; };
+	// detectorElem.ondrop = function (e) {
+ //  		this.classList.remove("droptarget");
+ //  		e.preventDefault();
+	// 	theBuffer = null;
 
-	  	var reader = new FileReader();
-	  	reader.onload = function (event) {
-	  		audioContext.decodeAudioData( event.target.result, function(buffer) {
-	    		theBuffer = buffer;
-	  		}, function(){alert("error loading!");} ); 
+	//   	var reader = new FileReader();
+	//   	reader.onload = function (event) {
+	//   		audioContext.decodeAudioData( event.target.result, function(buffer) {
+	//     		theBuffer = buffer;
+	//   		}, function(){alert("error loading!");} ); 
 
-	  	};
-	  	reader.onerror = function (event) {
-	  		alert("Error: " + reader.error );
-		};
-	  	reader.readAsArrayBuffer(e.dataTransfer.files[0]);
-	  	return false;
-	};
+	//   	};
+	//   	reader.onerror = function (event) {
+	//   		alert("Error: " + reader.error );
+	// 	};
+	//   	reader.readAsArrayBuffer(e.dataTransfer.files[0]);
+	//   	return false;
+	// };
 
 
 
@@ -196,6 +196,7 @@ function togglePlayback() {
 			window.cancelAnimationFrame = window.webkitCancelAnimationFrame;
         window.cancelAnimationFrame( rafID );
         document.write(notesData);
+        //makeNotesFile();
         return "start";
     }
     sourceNode = audioContext.createBufferSource();
@@ -213,6 +214,27 @@ function togglePlayback() {
 
     return "stop";
 }
+
+// function makeNotesFile(){
+// 	// var fileName = "notesData.txt";
+// 	// var file = new File([""], fileName);
+// 	// file.open("w"); 
+// 	// file.writeln(notesData);
+
+// 	// file.close();
+// 	// console.log("written file");
+// 	// file.writeFile('./public/files/text.txt', text, function (err) {
+//  //        if (err) {
+//  //            return console.log('there is an error');
+//  //        }
+ 
+//  //        console.log('the file was saved');
+//  //        respondWithFile();
+//  //    });
+// var blob = new Blob(notesData, {type: "text/plain;charset=utf-8"});
+// saveAs(blob, "hello world.txt");
+	
+// }
 
 var rafID = null;
 var tracks = null;
@@ -360,32 +382,34 @@ function updatePitch( time ) {
 	}
 
  	if (ac == -1) {
- 		detectorElem.className = "vague";
-	 	pitchElem.innerText = "--";
-		noteElem.innerText = "-";
-		detuneElem.className = "";
-		detuneAmount.innerText = "--";
+ 		// detectorElem.className = "vague";
+	 // 	pitchElem.innerText = "--";
+		// noteElem.innerText = "-";
+		// detuneElem.className = "";
+		// detuneAmount.innerText = "--";
  	} else {
-	 	detectorElem.className = "confident";
+	 	// detectorElem.className = "confident";
 	 	pitch = ac;
-	 	pitchElem.innerText = Math.round( pitch ) ;
+	 	// pitchElem.innerText = Math.round( pitch ) ;
 	 	var note =  noteFromPitch( pitch );
-		noteElem.innerHTML = noteStrings[note%12];
+		// noteElem.innerHTML = noteStrings[note%12];
 		var detune = centsOffFromPitch( pitch, note );
-		if (detune == 0 ) {
-			detuneElem.className = "";
-			detuneAmount.innerHTML = "--";
-		} else {
-			if (detune < 0)
-				detuneElem.className = "flat";
-			else
-				detuneElem.className = "sharp";
-			detuneAmount.innerHTML = Math.abs( detune );
-		}
-		notesData.push(noteElem.innerHTML);
+		// if (detune == 0 ) {
+		// 	detuneElem.className = "";
+		// 	detuneAmount.innerHTML = "--";
+		// } else {
+		// 	if (detune < 0)
+		// 		detuneElem.className = "flat";
+		// 	else
+		// 		detuneElem.className = "sharp";
+		// 	detuneAmount.innerHTML = Math.abs( detune );
+		// }
+		notesData.push(noteStrings[note%12]);
 	}
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
 }
+
+
